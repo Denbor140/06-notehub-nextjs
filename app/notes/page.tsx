@@ -9,11 +9,16 @@ import NotesClient from './Notes.client';
 const PER_PAGE = 12;
 
 interface NotesPageProps {
-  searchText: string;
-  page: number;
+  searchParams?: {
+    searchText?: string;
+    page: number;
+  };
 }
 
-export default async function NotesPage({ searchText, page }: NotesPageProps) {
+export default async function NotesPage({ searchParams }: NotesPageProps) {
+  const searchText = searchParams?.searchText ?? '';
+  const page = searchParams?.page ?? 1;
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -23,7 +28,7 @@ export default async function NotesPage({ searchText, page }: NotesPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient clientPage={page} clientSearchText={searchText} />
     </HydrationBoundary>
   );
 }

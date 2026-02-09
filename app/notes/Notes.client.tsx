@@ -13,9 +13,17 @@ import { useDebouncedCallback } from 'use-debounce';
 
 const PER_PAGE = 12;
 
-export default function NotesClient() {
-  const [searchText, setSearchText] = useState('');
-  const [page, setPage] = useState(1);
+interface NotesClientProps {
+  clientSearchText: string;
+  clientPage: number;
+}
+
+export default function NotesClient({
+  clientSearchText,
+  clientPage,
+}: NotesClientProps) {
+  const [searchText, setSearchText] = useState(clientSearchText);
+  const [page, setPage] = useState(clientPage);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data } = useQuery<FetchNotesResponse>({
